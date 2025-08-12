@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% block css%}{% endblock %}
+</head>
+<body>
+    <nav>
+        <div>
+            <ul>
+                <li><a href="">TPR</a></li>
+                <li><a href="">Resources</a></li>
+                <li><a href="">Projects</a></li>
+                <li><a href="">Attendance</a></li>
+                <li><a href="">Tech Stack</a></li>
+                <li><a href="">Interns</a></li>
+                <li><a href="">Tree Structure</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        {% block content%}{% endblock %}
+    </main>
+
+    {% block js %}{% endblock %}
+</body>
+</html>
