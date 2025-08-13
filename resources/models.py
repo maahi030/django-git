@@ -1,4 +1,5 @@
 from django.db import models
+import calendar
 
 class Resource(models.Model):
     resource_name = models.CharField(max_length=100,help_text="Full name of resource")
@@ -16,6 +17,15 @@ class ResourceAttendace(models.Model):
     working_days = models.FloatField(null=True,blank=True,help_text="Leave empty to auto-calculate")
     present_day = models.FloatField(default=0)
     present_hours = models.FloatField(default=0,help_text="Leave empty to auto-calculate")
+
+    def save(self,*args,**kwargs):
+        if self.working_days in (None,0):
+            total_days = calendar.monthrange(self.year,self.month)[1]
+            self.working_days = total_days - 7
+        if self.present_hours in (None,0):
+            self.present_hours = self.present_day * 8
+        
+        super.save(*args, **kwargs)
 
     def __str__(self):
         return self.resource.resource_name

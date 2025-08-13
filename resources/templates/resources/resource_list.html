@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        <a href="{% url 'resources:resource_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Add Resource
+        </a>
+    </div>
+    {% if resources %}
+    <table>
+    <thead>
+        <tr><th>Resource Name</th></tr>
+    </thead>
+    <tbody>
+        {% for resource in resources %}
+        <tr>
+            <td>{{ resource.resource_name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div>No resource found</div>
+{% endif %}
+{% endblock %}

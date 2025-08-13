@@ -13,8 +13,13 @@ class Projects(models.Model):
         return self.project_name
     
 class ProjectAttendance(models.Model):
+    PROJECT_TYPE_CHOICES = [
+        ('REGULAR', 'Regular Project'),
+        ('FIXED_COST', 'Fixed Cost Project'),
+    ] 
+
     project = models.ForeignKey(Projects,on_delete=models.CASCADE,related_name="project_attendance")
-    project_type = models.CharField(max_length=20,default='REGULAR')
+    project_type = models.CharField(max_length=20,choices=PROJECT_TYPE_CHOICES,default='REGULAR')
     year = models.PositiveIntegerField()
     month = models.PositiveIntegerField()
     project_profile = models.ForeignKey(Resource,on_delete=models.PROTECT,help_text="Main profile of the project",related_name="project_profile")
@@ -26,6 +31,14 @@ class ProjectAttendance(models.Model):
     billable_hours = models.FloatField(default=0,help_text="Leave empty to auto-calcuate")
     non_billable_hours = models.FloatField(default=0,help_text="Leave empty to auto-calculate")
     extra_hours = models.FloatField(default=0,null=True,blank=True)
+
+    def save(self,*args, **kwargs):
+        if self.billable_hours in (None,0):
+            self.billable_hours = self.billable_days * 8
+        if self.non_billable_hours in (None,0):
+            self.non_billable_hours = self.non_billable_hours * 8
+
+        super.save(*args, **kwargs)
 
     def __str__(self):
         return self.project.project_name
