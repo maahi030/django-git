@@ -2,6 +2,12 @@ from django.shortcuts import render,redirect
 from .models import Resource,ResourceAttendace
 from .forms import ResourceForm,ResourceAttendanceForm
 
+#admin-dashboard
+def admin_dashboard(request):
+    resources = Resource.objects.count()
+    return render(request,'admin_dashboard.html',{'resources':resources})
+
+#resources
 def resource_create(request):
     if request.method == "POST":
         form = ResourceForm(request.POST)
@@ -15,3 +21,4 @@ def resource_create(request):
 def resource_list(request):
     resources = Resource.objects.all()
     return render(request,'resources/resource_list.html',{'resources':resources})
+
