@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %} Dashboard {% endblock %}
-{%block extra_css %}
+{%block css %}
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -439,5 +439,170 @@
       </div>
     </div>
   </section>
+
+  <!-- Charts Section -->
+  <section class="charts-section">
+    <div class="charts-grid">
+      <!-- Team Productivity Chart -->
+      <div class="chart-card">
+        <div class="chart-title">
+          <i class="fas fa-chart-pie text-success me-2"></i>
+          Team Productivity
+        </div>
+        {% comment %} {% if team_productivity_percentage == 0 %}
+        <div class="chart-message danger">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          0% productivity — All hours unproductive
+        </div>
+        {% endif %}
+        <div class="chart-container">
+          <canvas id="productivityChart"></canvas>
+        </div> {% endcomment %}
+      </div>
+
+      <!-- Presence Percentage Chart -->
+      <div class="chart-card">
+        <div class="chart-title">
+          <i class="fas fa-calendar-check text-primary me-2"></i>
+          Attendance Rate
+        </div>
+        {% comment %} {% if presence_percentage == 0 %}
+        <div class="chart-message danger">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          0% presence — No working days present
+        </div>
+        {% endif %}
+        <div class="chart-container">
+          <canvas id="presenceChart"></canvas>
+        </div>
+      </div> {% endcomment %}
+    </div>
+  </section>
+
+  <!-- Navigation Cards -->
+  <section class="navigation-section">
+    <div class="nav-grid">
+      <a href="#" class="nav-card">
+        <div class="nav-content">
+          <i class="fas fa-users nav-icon"></i>
+          <div class="nav-text">View Resources</div>
+        </div>
+      </a>
+      
+      <a href="#" class="nav-card">
+        <div class="nav-content">
+          <i class="fas fa-project-diagram nav-icon"></i>
+          <div class="nav-text">View Projects</div>
+        </div>
+      </a>
+      
+      <a href="#" class="nav-card">
+        <div class="nav-content">
+          <i class="fas fa-user-graduate nav-icon"></i>
+          <div class="nav-text">View Charts</div>
+        </div>
+      </a>
+
+      <a href="#" class="nav-card">
+        <div class="nav-content">
+          <i class="fas fa-user-graduate nav-icon"></i>
+          <div class="nav-text">Manage Resources</div>
+        </div>
+      </a>
+    </div>
+     </section>
+
 </div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      // Enhanced chart configuration with better styling
+      const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 20,
+              usePointStyle: true,
+              font: {
+                size: 12,
+                weight: '500'
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            titleColor: 'white',
+            bodyColor: 'white',
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            displayColors: true
+          }
+        }
+      };
+
+      // Productivity Chart
+      const productivity = parseFloat("{{ team_productivity_percentage|floatformat:2 }}");
+      const unproductive = 100 - productivity;
+
+      const ctx = document.getElementById("productivityChart").getContext("2d");
+      const productivityChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Productive", "Unproductive"],
+          datasets: [{
+            data: [productivity, unproductive],
+                         backgroundColor: [
+               "rgba(59, 130, 246, 0.9)",
+               "rgba(239, 68, 68, 0.9)"
+             ],
+             borderColor: [
+               "rgba(59, 130, 246, 1)",
+               "rgba(239, 68, 68, 1)"
+             ],
+            borderWidth: 2,
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          ...chartOptions,
+          cutout: '60%'
+        }
+      });
+
+      // Presence Chart
+      const presence = parseFloat("{{ presence_percentage|floatformat:2 }}");
+      const absence = 100 - presence;
+
+      const ctxPresence = document.getElementById("presenceChart").getContext("2d");
+      const presenceChart = new Chart(ctxPresence, {
+        type: "doughnut",
+        data: {
+          labels: ["Present", "Absent"],
+          datasets: [{
+            data: [presence, absence],
+                         backgroundColor: [
+               "rgba(59, 130, 246, 0.9)",
+               "rgba(156, 163, 175, 0.9)"
+             ],
+             borderColor: [
+               "rgba(59, 130, 246, 1)",
+               "rgba(156, 163, 175, 1)"
+             ],
+            borderWidth: 2,
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          ...chartOptions,
+          cutout: '60%'
+        }
+      });
+    </script>
 {% endblock %}
