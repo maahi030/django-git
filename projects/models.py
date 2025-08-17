@@ -2,7 +2,12 @@ from django.db import models
 from resources.models import Resource
 
 class Projects(models.Model):
+    PROJECT_TYPE_CHOICES = [
+        ('REGULAR', 'Regular Project'),
+        ('FIXED_COST', 'Fixed Cost Project'),
+    ] 
     project_name = models.CharField(max_length=100,help_text="Name of the project")
+    project_type = models.CharField(max_length=20,choices=PROJECT_TYPE_CHOICES,default='REGULAR')
     start_year = models.PositiveIntegerField(help_text="Year when the project started")
     end_year = models.PositiveIntegerField(null=True,blank=True,help_text="Year when the project ended")
     start_month = models.PositiveIntegerField(help_text="Month when the project started")
@@ -13,13 +18,7 @@ class Projects(models.Model):
         return self.project_name
     
 class ProjectAttendance(models.Model):
-    PROJECT_TYPE_CHOICES = [
-        ('REGULAR', 'Regular Project'),
-        ('FIXED_COST', 'Fixed Cost Project'),
-    ] 
-
     project = models.ForeignKey(Projects,on_delete=models.CASCADE,related_name="project_attendance")
-    project_type = models.CharField(max_length=20,choices=PROJECT_TYPE_CHOICES,default='REGULAR')
     year = models.PositiveIntegerField()
     month = models.PositiveIntegerField()
     project_profile = models.ForeignKey(Resource,on_delete=models.PROTECT,help_text="Main profile of the project",related_name="project_profile")

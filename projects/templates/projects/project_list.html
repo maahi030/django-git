@@ -150,49 +150,30 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-    <h2 class="mb-4">Resources Data</h2>
+    <h2 class="mb-4">Projects Data</h2>
 
-    <!-- Add Resource Button -->
-    <a href="{% url 'resources:resource_create' %}" class="btn btn-outline-success mb-3">
-        <i class="far fa-plus-square"></i> Add Resource
+    <!-- Add Project Button -->
+    <a href="{% url 'projects:project_create' %}" class="btn btn-outline-success mb-3">
+        <i class="far fa-plus-square"></i> Add Project
     </a>
-    {% if resources %}
+    {% if projects %}
     <div class="table-responsive">
         <table class="table table-bordered table-hover align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th>Resource Name</th>
-                    {% comment %} <th>Working Days</th>
-                    <th>Days Present</th>
-                    <th>Hours Present</th>
-                    <th>Year</th>
-                    <th>Month</th>
-                    <th>Active</th> {% endcomment %}
+                    <th>Project Name</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for resource in resources %}
+                {% for project in projects %}
                 <tr>
-                    {% comment %} <td>{{ rmd.resource.resource_name }}</td>
-                    <td>{{ rmd.working_days }}</td>
-                    <td>{{ rmd.present_day }}</td>
-                    <td>{{ rmd.present_hours }}</td>
-                    <td>{{ rmd.year }}</td>
-                    <td>{{ rmd.get_month_display }}</td>
-                    <td>
-                        {% if rmd.resource.is_active %}
-                            <span class="badge bg-success">Active</span>
-                        {% else %}
-                            <span class="badge bg-danger">Inactive</span>
-                        {% endif %}
-                    </td> {% endcomment %}
-                    <td>{{ resource.resource_name }}</td>
+                    <td>{{ project.project_name }}</td>
                     <td class="text-center action-buttons">
-                      <a href="#" class="btn btn-update" title="Edit Resource">
+                      <a href="#" class="btn btn-update" title="Edit Project">
                         <i class="far fa-edit"></i>
                       </a>
-                      <a href="#" class="btn btn-delete" title="Deactivate Resource">
+                      <a href="#" class="btn btn-delete" title="Deactivate Project">
                         <i class="far fa-trash-alt"></i>
                       </a>
                     </td>
@@ -202,6 +183,6 @@
         </table>
     </div>
 {% else %}
-<div>No resource found</div>
+<div>No project found</div>
 {% endif %}
 {% endblock %}

@@ -22,5 +22,6 @@ from resources.views import admin_dashboard
 urlpatterns = [
     path("",admin_dashboard,name="admin_dashboard"),
     path("admin/", admin.site.urls),
-    path("resources/",include("resources.urls"))
+    path("resources/",include("resources.urls")),
+    path("projects/",include("projects.urls"))
 ]
